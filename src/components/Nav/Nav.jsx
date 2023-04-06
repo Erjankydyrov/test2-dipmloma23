@@ -4,8 +4,10 @@ import "./Nav.css";
 export default function Nav() {
   return (
     <nav className="Nav">
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/about">About</NavLink>
+      <ul>
+        <li><NavLink to="/">Home</NavLink></li>
+        <li><NavLink to="/about">About</NavLink></li>
+      </ul>
     </nav>
   );
 }
