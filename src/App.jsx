@@ -4,14 +4,16 @@ import Home from "./pages/Home";
 import Category from "./pages/Category";
 import { createContext, useEffect, useState } from "react";
 import { getDocs } from "firebase/firestore";
-import { categoryCollection } from "./firebase";
+import { categoryCollection, productCollection } from "./firebase";
 
 export const AppContext = createContext({
-  categories: []
+  categories: [],
+  products: []
 });
 
 export default function App() {
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
 
   // выполнить эту функцию только один раз
   useEffect(() => {
@@ -32,11 +34,29 @@ export default function App() {
         // задать новый массив как состояние комапо
         setCategories(newCategories);
       })
+
+    // получить продукты из списка продуктов
+    getDocs(productCollection)
+      .then(snapshot => {
+        // продукты будут храниться в snapshot.docs
+
+        // создать массив для продуктов
+        const newProducts = [];
+        // заполнить массив данными из списка продвук
+        snapshot.docs.forEach(doc => { // doc = продукт
+          const product = doc.data();
+          product.id = doc.id;
+
+          newProducts.push(product);
+        });
+        // задать новый массив как состояние комапо
+        setProducts(newProducts);
+      })
   }, []);
   
   return (
     <div className="App">
-      <AppContext.Provider value={{ categories }}>
+      <AppContext.Provider value={{ categories, products }}>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
