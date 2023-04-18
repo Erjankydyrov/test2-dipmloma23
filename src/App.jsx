@@ -5,15 +5,23 @@ import Category from "./pages/Category";
 import { createContext, useEffect, useState } from "react";
 import { getDocs } from "firebase/firestore";
 import { categoryCollection, productCollection } from "./firebase";
+import Cart from "./pages/Cart";
 
 export const AppContext = createContext({
   categories: [],
-  products: []
+  products: [],
+
+  // корзина
+  cart: {},
+  setCart: () => {}
 });
 
 export default function App() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+
+  // корзина
+  const [cart, setCart] = useState({});
 
   // выполнить эту функцию только один раз
   useEffect(() => {
@@ -56,12 +64,13 @@ export default function App() {
   
   return (
     <div className="App">
-      <AppContext.Provider value={{ categories, products }}>
+      <AppContext.Provider value={{ categories, products, cart, setCart }}>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<h2>About</h2>} />
             <Route path="/category/:path" element={<Category />} />
+            <Route path="/cart" element={<Cart />} />
           </Routes>
         </Layout>
       </AppContext.Provider>
