@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Category from "./pages/Category";
 import { createContext, useEffect, useState } from "react";
 import { getDocs } from "firebase/firestore";
-import { categoryCollection, productCollection } from "./firebase";
+import { categoryCollection, onAuthChange, productCollection } from "./firebase";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import Product from "./pages/Product";
@@ -16,11 +16,16 @@ export const AppContext = createContext({
   // корзина
   cart: {},
   setCart: () => {},
+
+  user: null, // здесь будет храниться информация про пользователя
 });
 
 export default function App() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+
+  // состояние которое хранит информацию пользователя
+  const [user, setUser] = useState(null);
 
   // корзина
   const [cart, setCart] = useState(() => {
@@ -71,11 +76,15 @@ export default function App() {
       // задать новый массив как состояние комапо
       setProducts(newProducts);
     });
+
+    onAuthChange(user => {
+      setUser(user);
+    });
   }, []);
 
   return (
     <div className="App">
-      <AppContext.Provider value={{ categories, products, cart, setCart }}>
+      <AppContext.Provider value={{ categories, products, cart, setCart, user }}>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
