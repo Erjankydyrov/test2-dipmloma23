@@ -21,6 +21,7 @@ const auth = getAuth(app);
 // получить список категорий (коллекция документов).
 export const categoryCollection = collection(db, 'categories');
 export const productCollection = collection(db, 'products');
+export const orderCollection = collection(db, 'orders');
 
 const provider = new GoogleAuthProvider();
 export const logIn = () => signInWithPopup(auth, provider);
