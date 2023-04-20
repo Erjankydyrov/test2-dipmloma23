@@ -6,6 +6,7 @@ import { createContext, useEffect, useState } from "react";
 import { getDocs } from "firebase/firestore";
 import { categoryCollection, productCollection } from "./firebase";
 import Cart from "./pages/Cart";
+import NotFound from "./pages/NotFound";
 
 export const AppContext = createContext({
   categories: [],
@@ -80,6 +81,8 @@ export default function App() {
             <Route path="/about" element={<h2>About</h2>} />
             <Route path="/category/:path" element={<Category />} />
             <Route path="/cart" element={<Cart />} />
+
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
       </AppContext.Provider>

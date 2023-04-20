@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useMatch } from "react-router-dom";
 import { AppContext } from "../App";
 import ProductList from "../components/ProductList/ProductList";
+import NotFound from "./NotFound";
 
 export default function Category() {
   // деструктизацтия
@@ -25,6 +26,10 @@ export default function Category() {
     }
     */
   );
+
+  if (!category) {
+    return <NotFound />;
+  }
 
   return (
     <div className="Category">
