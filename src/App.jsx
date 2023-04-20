@@ -13,7 +13,7 @@ export const AppContext = createContext({
 
   // корзина
   cart: {},
-  setCart: () => {}
+  setCart: () => {},
 });
 
 export default function App() {
@@ -21,47 +21,56 @@ export default function App() {
   const [products, setProducts] = useState([]);
 
   // корзина
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState(() => {
+    // восстановить содержимое корзинки из памяти браузера.
+    return JSON.parse(localStorage.getItem("cart")) || {};
+  });
+
+  // выполнить эту функцию только когда содержимое корзинки меняется
+  useEffect(() => {
+    // сохранить содержимое корзинки в памяти браузера
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   // выполнить эту функцию только один раз
   useEffect(() => {
     // получить категории из списка категорий
-    getDocs(categoryCollection)
-      .then(snapshot => {
-        // категории будут храниться в snapshot.docs
+    getDocs(categoryCollection).then((snapshot) => {
+      // категории будут храниться в snapshot.docs
 
-        // создать массив для категорий
-        const newCategories = [];
-        // заполнить массив данными из списка категорий
-        snapshot.docs.forEach(doc => { // doc = категория
-          const category = doc.data();
-          category.id = doc.id;
+      // создать массив для категорий
+      const newCategories = [];
+      // заполнить массив данными из списка категорий
+      snapshot.docs.forEach((doc) => {
+        // doc = категория
+        const category = doc.data();
+        category.id = doc.id;
 
-          newCategories.push(category);
-        });
-        // задать новый массив как состояние комапо
-        setCategories(newCategories);
-      })
+        newCategories.push(category);
+      });
+      // задать новый массив как состояние комапо
+      setCategories(newCategories);
+    });
 
     // получить продукты из списка продуктов
-    getDocs(productCollection)
-      .then(snapshot => {
-        // продукты будут храниться в snapshot.docs
+    getDocs(productCollection).then((snapshot) => {
+      // продукты будут храниться в snapshot.docs
 
-        // создать массив для продуктов
-        const newProducts = [];
-        // заполнить массив данными из списка продвук
-        snapshot.docs.forEach(doc => { // doc = продукт
-          const product = doc.data();
-          product.id = doc.id;
+      // создать массив для продуктов
+      const newProducts = [];
+      // заполнить массив данными из списка продвук
+      snapshot.docs.forEach((doc) => {
+        // doc = продукт
+        const product = doc.data();
+        product.id = doc.id;
 
-          newProducts.push(product);
-        });
-        // задать новый массив как состояние комапо
-        setProducts(newProducts);
-      })
+        newProducts.push(product);
+      });
+      // задать новый массив как состояние комапо
+      setProducts(newProducts);
+    });
   }, []);
-  
+
   return (
     <div className="App">
       <AppContext.Provider value={{ categories, products, cart, setCart }}>
