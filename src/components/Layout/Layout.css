@@ -9,6 +9,10 @@
   flex-grow: 0;
   flex-shrink: 0;
   background-color: antiquewhite;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .Layout aside {
   flex: 20% 0 0;
@@ -22,3 +26,8 @@
   flex: 100% 0 0;
   background-color: rgb(235, 235, 235);
 }
+@media (max-width: 650px) {
+  .Layout header > .Nav {
+    display: none;
+  }
+} 
