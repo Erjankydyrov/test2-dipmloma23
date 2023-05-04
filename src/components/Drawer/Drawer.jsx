@@ -11,7 +11,7 @@ function Drawer({ open, toggle }) {
       <div className="content">
         <Logo />
         <Nav />
-      </div>
+      </div>  
     </div>
   );
 }
