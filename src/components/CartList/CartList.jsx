@@ -26,7 +26,7 @@ export default function CartList() {
     .map((product) => (
       <div className="CartItem">
         <img src={product.picture} alt={product.name} />
-        <Link to={"/product/" + product.slug}>{product.name}</Link>
+        <Link to={"/product/" + product.path}>{product.name}</Link>
         <input
           type="number"
           min={1}

@@ -1,27 +1,37 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { collection, getFirestore, onSnapshot } from "firebase/firestore";
-import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBrBPIGtAbKWPNWwFwwFI2_NuWo-JY5IIs",
-  authDomain: "diplom-6cfe2.firebaseapp.com",
-  projectId: "diplom-6cfe2",
-  storageBucket: "diplom-6cfe2.appspot.com",
-  messagingSenderId: "104898799547",
-  appId: "1:104898799547:web:2b5d6221ef0f3b7b90069e"
+  apiKey: "AIzaSyDuu0Y9sJIMkyMiIYZyptPlrj90kaWEyD4",
+  authDomain: "diploma23-fb1f1.firebaseapp.com",
+  projectId: "diploma23-fb1f1",
+  storageBucket: "diploma23-fb1f1.appspot.com",
+  messagingSenderId: "315186134637",
+  appId: "1:315186134637:web:03a9ccef74b8f9f2968964",
+  measurementId: "G-8F0BYQ15P0",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 const auth = getAuth(app);
+export const storage = getStorage(app);
 
 // получить список категорий (коллекция документов).
-export const categoryCollection = collection(db, 'categories');
-export const productCollection = collection(db, 'products');
-export const orderCollection = collection(db, 'orders');
+export const categoryCollection = collection(db, "categories");
+export const productCollection = collection(db, "products");
+export const orderCollection = collection(db, "orders");
 
 const provider = new GoogleAuthProvider();
 export const logIn = () => signInWithPopup(auth, provider);
@@ -55,3 +65,12 @@ export const onOrdersLoad = (callback) =>
       }))
     )
   );
+
+// отправка фотографии и получение ее url
+export const uploadProductPhoto = async (file) => {
+  const storageRef = ref(storage, `products/${file.name}`);
+  await uploadBytes(storageRef, file);
+
+  const url = await getDownloadURL(storageRef);
+  return url;
+};
